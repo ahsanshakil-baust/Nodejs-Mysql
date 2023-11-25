@@ -11,3 +11,6 @@ const auth = createSlice({
         },
     },
 });
+
+export const { addPost } = auth.actions;
+export default auth.reducer;
