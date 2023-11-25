@@ -3,22 +3,23 @@ import React from "react";
 import { NavbarWrapper } from "./style";
 import { navwrapper } from "./tailwind";
 import Link from "next/link";
-import Button from "@mui/material/Button";
-import SendIcon from "@mui/icons-material/Send";
 
 const Navbar = () => {
-  return (
-    <NavbarWrapper className={navwrapper}>
-      <Link href="/pages/home">Home</Link>
-      <Link href="/pages/signup">SignUp</Link>
+    return (
+        <NavbarWrapper className={navwrapper}>
+            <Link className="underline mr-5" href="/pages/home">
+                Home
+            </Link>
 
-      <Button variant="contained" endIcon={<SendIcon />}>
-        <Link className="no-underline " href="/pages/login">
-          Login
-        </Link>
-      </Button>
-    </NavbarWrapper>
-  );
+            <Link className="underline mr-5" href="/pages/signup">
+                SignUp
+            </Link>
+
+            <Link className="underline mr-5" href="/pages/login">
+                Login
+            </Link>
+        </NavbarWrapper>
+    );
 };
 
 export default Navbar;
