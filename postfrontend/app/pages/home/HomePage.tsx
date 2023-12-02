@@ -13,6 +13,8 @@ const HomeWrapper = styled("div")({
     width: "500px",
 });
 
+const handleSubmit = () => {};
+
 const HomePage = () => {
     return (
         <HomeWrapper>
@@ -32,8 +34,9 @@ const HomePage = () => {
             <Button
                 variant="outlined"
                 style={{ alignSelf: "flex-start", marginTop: "10px" }}
+                onClick={handleSubmit}
             >
-                Outlined
+                Submit
             </Button>
         </HomeWrapper>
     );
