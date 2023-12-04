@@ -1,19 +1,9 @@
 "use client";
 
-import styled from "@emotion/styled";
 import { TextField, TextareaAutosize, Button } from "@mui/material";
+import { HomeWrapper } from "./style";
 
-const HomeWrapper = styled("div")({
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    margin: "auto",
-    marginTop: "200px",
-    width: "500px",
-});
-
-const handleSubmit = () => {};
+const handleSubmit = (e: any) => {};
 
 const HomePage = () => {
     return (
