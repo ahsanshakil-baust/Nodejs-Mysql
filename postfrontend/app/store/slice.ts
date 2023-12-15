@@ -1,15 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const obj = {};
+const initialState = {
+  posts: [],
+};
 
 const auth = createSlice({
-    name: "post",
-    initialState: obj,
-    reducers: {
-        addPost: (state, action) => {
-            state = action.payload;
-        },
+  name: "posts",
+  initialState,
+  reducers: {
+    addPost: (state, action) => {
+      state.posts.push(action.payload);
     },
+  },
 });
 
 export const { addPost } = auth.actions;
