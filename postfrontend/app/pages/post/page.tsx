@@ -4,20 +4,23 @@ import { TextField, TextareaAutosize, Button } from "@mui/material";
 import { HomeWrapper } from "./style";
 import { useState } from "react";
 import { addPost } from "@/app/store/slice";
+import { useAddPostMutation } from "@/app/store/api/apiSlice";
 
 const PostPage = () => {
   const [postDetails, setPostDetails] = useState({
     title: "",
-    post: "",
+    desc: "",
   });
 
   const dispatch = useDispatch();
+  const [newPost] = useAddPostMutation();
 
   const handleSubmit = (e: any) => {
-    dispatch(addPost(postDetails));
+    // dispatch(addPost(postDetails));
+    newPost(postDetails);
     setPostDetails({
       title: "",
-      post: "",
+      desc: "",
     });
   };
 
@@ -44,8 +47,8 @@ const PostPage = () => {
         minRows={5}
         placeholder="Your Post..."
         onChange={changeHandler}
-        value={postDetails.post}
-        name="post"
+        value={postDetails.desc}
+        name="desc"
       />
 
       <Button
