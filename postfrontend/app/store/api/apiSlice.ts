@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:6000",
+    baseUrl: "http://localhost:3030",
   }),
   tagTypes: ["Posts"],
   endpoints: (builder) => ({
@@ -16,7 +16,12 @@ export const apiSlice = createApi({
 
       invalidatesTags: ["Posts"],
     }),
+
+    getPosts: builder.query({
+      query: (name) => "/",
+      providesTags: ["Posts"],
+    }),
   }),
 });
 
-export const { useAddPostMutation } = apiSlice;
+export const { useAddPostMutation, useGetPostsQuery } = apiSlice;
