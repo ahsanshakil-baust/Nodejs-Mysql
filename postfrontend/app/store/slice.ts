@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   posts: [],
+  post: {},
 };
 
 const auth = createSlice({
@@ -11,8 +12,11 @@ const auth = createSlice({
     addPost: (state, action) => {
       state.posts.push(action.payload);
     },
+    postObj: (state, action) => {
+      state.post = action.payload;
+    },
   },
 });
 
-export const { addPost } = auth.actions;
+export const { addPost, postObj } = auth.actions;
 export default auth.reducer;

@@ -1,30 +1,109 @@
 const connection = require("./connection");
 const express = require("express");
+const cors = require("cors");
 
 const app = express();
 
 app.use(express.json());
+app.use(cors());
 
-// Add Post
-app.post("/add-post", (req, res) => {
-  const { title, desc } = req.body;
-  const postData = { title, desc };
-
-  const query = "INSERT INTO posts SET ?";
-  connection.query(query, postData, (err, result) => {
-    if (!err) {
-      res.json(200, {
-        msg: "Post Inserted Successfully",
-        data: result,
-      });
-    } else {
-      res.json(500, {
-        errmsg: "Post Can't add due to server error",
-      });
-    }
-  });
+// Middleware to log incoming requests
+app.use((req, res, next) => {
+  console.log(`Incoming ${req.method} request to ${req.url}`);
+  next();
 });
 
-app.listen(6000, () => {
+// Add Post
+// app.post("/add-post", (req, res) => {
+//   const { title, desc } = req.body;
+//   const postData = { title, desc };
+
+//   const query = "INSERT INTO posts SET ?";
+//   connection.query(query, postData, (err, result) => {
+//     if (!err) {
+//       res.json(200, {
+//         msg: "Post Inserted Successfully",
+//         data: result,
+//       });
+//     } else {
+//       res.json(500, {
+//         errmsg: "Post Can't add due to server error",
+//       });
+//     }
+//   });
+// });
+
+// Route to handle adding a post
+app.post("/add-post", async (req, res) => {
+  try {
+    const { title, desc } = req.body;
+    // Validate inputs if needed
+
+    // Create a prepared statement with placeholders
+    const query = `INSERT INTO posts (title, \`desc\`) VALUES (?, ?)`;
+
+    const values = [title, desc];
+
+    // Execute the query using prepared statement
+    await connection.promise().execute(query, values);
+
+    res.status(200).json({
+      msg: "Post Inserted Successfully",
+    });
+  } catch (err) {
+    console.error("Error inserting post:", err);
+    res.status(500).json({
+      errMsg: err.message,
+    });
+  }
+});
+
+app.get("/", async (req, res) => {
+  try {
+    const query = "SELECT * FROM posts";
+
+    await connection.execute(query, (err, results) => {
+      if (!err)
+        res.status(200).json({
+          data: results,
+        });
+      else
+        res.status(402).json({
+          errMsg: err.message,
+        });
+    });
+  } catch (err) {
+    console.error("Error retrieving users:", err);
+    res.status(500).json({
+      errMsg: "Internal server error occurred.",
+    });
+  }
+});
+
+app.post("/update-post", async (req, res) => {
+  try {
+    const { id, title, desc } = req.body;
+    // Validate inputs if needed
+
+    // Create a prepared statement with placeholders
+    const query = `UPDATE posts SET title = ?, desc = ? WHERE id = ${id}`;
+
+    const values = [title, desc];
+
+    // Execute the query using prepared statement
+    await connection.promise().execute(query, values);
+
+    res.status(200).json({
+      msg: "Post Updated Successfully",
+    });
+  } catch (err) {
+    console.error("Error updating post:", err);
+    res.status(500).json({
+      errMsg: err.message,
+    });
+  }
+});
+
+app.listen(3030, () => {
   console.log("Server running...");
 });

@@ -1,8 +1,13 @@
 "use client";
 import { useGetPostsQuery } from "@/app/store/api/apiSlice";
+import { useEffect } from "react";
 
 const HomePage = () => {
-  const { data, isLoading } = useGetPostsQuery("ahsan");
+  const { data, isLoading, refetch } = useGetPostsQuery("ahsan");
+
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
 
   return (
     <ul className="flex flex-col justify-center items-center mt-10">
