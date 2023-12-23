@@ -9,8 +9,8 @@ app.use(cors());
 
 // Middleware to log incoming requests
 app.use((req, res, next) => {
-  console.log(`Incoming ${req.method} request to ${req.url}`);
-  next();
+    console.log(`Incoming ${req.method} request to ${req.url}`);
+    next();
 });
 
 // Add Post
@@ -35,75 +35,85 @@ app.use((req, res, next) => {
 
 // Route to handle adding a post
 app.post("/add-post", async (req, res) => {
-  try {
-    const { title, desc } = req.body;
-    // Validate inputs if needed
+    try {
+        const { title, desc } = req.body;
+        // Validate inputs if needed
 
-    // Create a prepared statement with placeholders
-    const query = `INSERT INTO posts (title, \`desc\`) VALUES (?, ?)`;
+        // Create a prepared statement with placeholders
+        const query = `INSERT INTO posts (title, \`desc\`) VALUES (?, ?)`;
 
-    const values = [title, desc];
+        const values = [title, desc];
 
-    // Execute the query using prepared statement
-    await connection.promise().execute(query, values);
+        // Execute the query using prepared statement
+        await connection.promise().execute(query, values);
 
-    res.status(200).json({
-      msg: "Post Inserted Successfully",
-    });
-  } catch (err) {
-    console.error("Error inserting post:", err);
-    res.status(500).json({
-      errMsg: err.message,
-    });
-  }
+        res.status(200).json({
+            msg: "Post Inserted Successfully",
+        });
+    } catch (err) {
+        res.status(500).json({
+            errMsg: err.message,
+        });
+    }
 });
 
 app.get("/", async (req, res) => {
-  try {
-    const query = "SELECT * FROM posts";
+    try {
+        const query = "SELECT * FROM posts";
 
-    await connection.execute(query, (err, results) => {
-      if (!err)
-        res.status(200).json({
-          data: results,
+        await connection.execute(query, (err, results) => {
+            if (!err)
+                res.status(200).json({
+                    data: results,
+                });
+            else
+                res.status(402).json({
+                    errMsg: err.message,
+                });
         });
-      else
-        res.status(402).json({
-          errMsg: err.message,
+    } catch (err) {
+        res.status(500).json({
+            errMsg: "Internal server error occurred.",
         });
-    });
-  } catch (err) {
-    console.error("Error retrieving users:", err);
-    res.status(500).json({
-      errMsg: "Internal server error occurred.",
-    });
-  }
+    }
 });
 
-app.post("/update-post", async (req, res) => {
-  try {
-    const { id, title, desc } = req.body;
-    // Validate inputs if needed
+app.patch("/update-post", async (req, res) => {
+    try {
+        const { id, title, desc } = req.body;
 
-    // Create a prepared statement with placeholders
-    const query = `UPDATE posts SET title = ?, desc = ? WHERE id = ${id}`;
+        const query = `UPDATE posts SET title = ?, \`desc\` = ? WHERE id = ${id}`;
 
-    const values = [title, desc];
+        const values = [title, desc];
 
-    // Execute the query using prepared statement
-    await connection.promise().execute(query, values);
+        await connection.promise().execute(query, values);
 
-    res.status(200).json({
-      msg: "Post Updated Successfully",
-    });
-  } catch (err) {
-    console.error("Error updating post:", err);
-    res.status(500).json({
-      errMsg: err.message,
-    });
-  }
+        res.status(200).json({
+            msg: "Post Updated Successfully",
+        });
+    } catch (err) {
+        res.status(500).json({
+            errMsg: err.message,
+        });
+    }
+});
+
+app.delete("/delete-post", async (req, res) => {
+    try {
+        const { id } = req.body;
+        const query = `DELETE FROM posts WHERE id = ${id}`;
+        await connection.promise().execute(query);
+
+        res.status(200).json({
+            msg: "Post Deleted Successfully",
+        });
+    } catch (err) {
+        res.status(500).json({
+            errMsg: err.message,
+        });
+    }
 });
 
 app.listen(3030, () => {
-  console.log("Server running...");
+    console.log("Server running...");
 });

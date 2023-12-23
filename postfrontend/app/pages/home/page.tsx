@@ -3,7 +3,7 @@ import {
     useDeletePostMutation,
     useGetPostsQuery,
 } from "@/app/store/api/apiSlice";
-import { postObj } from "@/app/store/slice";
+import { postObj, showModal } from "@/app/store/slice";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
@@ -14,8 +14,16 @@ const HomePage = () => {
     const dispatch = useDispatch();
     const router = useRouter();
 
-    const handleDelete = (post: object) => {
-        deletePost(post);
+    const handleDelete = async (post: object) => {
+        const response = await deletePost(post);
+        const result = response?.data;
+        dispatch(
+            showModal({
+                showModal: true,
+                modalType: "success",
+                msg: result?.msg,
+            })
+        );
     };
     const handleEdit = (list: any) => {
         dispatch(postObj(list));

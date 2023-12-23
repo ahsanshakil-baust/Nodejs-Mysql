@@ -21,7 +21,7 @@ const PostPage = () => {
     });
 
     const dispatch = useDispatch();
-    const [newPost, { data: addPostData }] = useAddPostMutation();
+    const [newPost] = useAddPostMutation();
     const [updatePost] = useUpdatePostMutation();
     const [deletePost] = useDeletePostMutation();
     const [errorObj, setErrorObj] = useState({
@@ -92,8 +92,16 @@ const PostPage = () => {
         });
     };
 
-    const handleDelete = (post: object) => {
-        deletePost(post);
+    const handleDelete = async (post: object) => {
+        const response = await deletePost(post);
+        const result = response?.data;
+        dispatch(
+            showModal({
+                showModal: true,
+                modalType: "success",
+                msg: result?.msg,
+            })
+        );
     };
 
     useEffect(() => {
