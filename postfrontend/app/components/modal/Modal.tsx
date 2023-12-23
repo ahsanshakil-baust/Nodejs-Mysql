@@ -1,10 +1,9 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import CloseIcon from "@mui/icons-material/Close";
 import { showModal } from "@/app/store/slice";
 import { Button } from "@mui/material";
 
-const Modal = ({ msg }: any) => {
+const Modal = () => {
     const dispatch = useDispatch();
     const modal = useSelector((state: any) => state.post.modal);
     const handleClose = () => {
